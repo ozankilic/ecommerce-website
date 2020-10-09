@@ -42,6 +42,7 @@
                             if(answer !== "success"){
                             alert(answer);
                             }else{
+								alert("Login successful. You are redirecting main page.");
                                 window.location.replace("./index.php");
                             }
                         }
@@ -57,14 +58,14 @@
             $(document).on("click", "#BtnRegister1", function() { 
                 firstname = $("#firstname").val();
 				lastname = $("#lastname").val();
-                email = $("#email").val();
-                password = $("#password").val();
+                email = $("#email1").val();
+                password = $("#password1").val();
 
                 $.ajax({
                     url: 'action_register.php',
                     data: {
                             firstname: firstname,
-							lastname: lastname;
+							lastname: lastname,
                             email: email,
                             password: password
                         },
@@ -73,7 +74,8 @@
                         if(!answer == ""){
                             alert(answer);
                         }else{
-                            window.location.replace("./login.html");
+							alert("Registration is successful. You can login")
+                            window.location.replace("./login.php");
                         }
                         }
                  });
@@ -223,14 +225,14 @@
 				<div class="col-sm-4">
 					<div class="signup-form"><!--sign up form-->
 					<h1>Registration</h1>
-        				<label id="lbl_firstname">Enter Your Username</label>
+        				<label id="lbl_firstname">Enter Your Firstname</label>
 						<input type="text", id="firstname", name="firstname", placeholder="firstname" /> <br> <br>
-						<label id="lbl_lastname">Enter Your Username</label>
+						<label id="lbl_lastname">Enter Your Lastname</label>
 						<input type="text", id="lastname", name="lastname", placeholder="lastname" /> <br> <br>
 						<label id="lbl_email">Enter Your E-mail</label>
-						<input type="email", id="email", name="email", placeholder="E-mail"/> <br> <br>
+						<input type="email", id="email1", name="email1", placeholder="E-mail"/> <br> <br>
 						<label id="lbl_password">Enter Your Password</label>
-						<input type="password", id="password", name="password", placeholder="Password" /> <br> <br>
+						<input type="password", id="password1", name="password1", placeholder="Password" /> <br> <br>
 						<button type="submit" id="BtnRegister1">Sign up</button>
 
 					</div><!--/sign up form-->

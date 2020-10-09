@@ -21,10 +21,45 @@
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+	<?php 
+		include "show_cart.php"; 
+		include "show_product.php";
+		include "db_connection.php";
+		session_start();
+	?>
+
+<script>
+function cart_quantity(productId,add,quantity) {
+   
+	$.ajax({
+		url: 'cart_quantity.php',
+		data: {
+			productId,
+			add,
+			quantity
+		},
+		type: 'POST',
+		success: function(answer) {
+				window.location.replace("cart.php");
+			}
+		});
+}
+      
+</script>
+	
+
+
+
 </head><!--/head-->
 
 <body>
+
+
 	<header id="header"><!--header-->
 		<div class="header_top"><!--header_top-->
 			<div class="container">
@@ -57,7 +92,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="images/home/logo.png" alt="" /></a>
+							<a href="index.php"><img src="images/home/logo.png" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">
@@ -86,11 +121,9 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
-								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
-								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html" class="active"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+							<?php
+								include "navbar.php";
+							?>
 							</ul>
 						</div>
 					</div>
@@ -112,24 +145,22 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html">Home</a></li>
+								<li><a href="index.php">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
-										<li><a href="product-details.html">Product Details</a></li> 
-										<li><a href="checkout.html">Checkout</a></li> 
-										<li><a href="cart.html" class="active">Cart</a></li> 
-										<li><a href="login.html">Login</a></li> 
+									<?php
+								include "navbar.php";
+							?>
                                     </ul>
                                 </li> 
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="blog.html">Blog List</a></li>
-										<li><a href="blog-single.html">Blog Single</a></li>
+                                        <li><a href="blog.php">Blog List</a></li>
+										<li><a href="blog-single.php">Blog Single</a></li>
                                     </ul>
                                 </li> 
-								<li><a href="404.html">404</a></li>
-								<li><a href="contact-us.html">Contact</a></li>
+								<li><a href="404.php">404</a></li>
+								<li><a href="contact-us.php">Contact</a></li>
 							</ul>
 						</div>
 					</div>
@@ -164,82 +195,48 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						
+						<?php
+						if (isset($_SESSION['loggedin']) && ($_SESSION['loggedin'] == true)) {
+							$total = 0;
+						$items = getItems($mysqli);
+						foreach($items as $item){
+							$id = $item['product_id'];
+							$theProduct = mysqli_fetch_row(getFeaturesId($id,$mysqli));
+							$subTotal =$theProduct[1]*$item['quantity'];
+							$total +=$subTotal;
+							echo '<tr>
 							<td class="cart_product">
-								<a href=""><img src="images/cart/one.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/two.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/three.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+							<a href=""><img src="'.$theProduct[2].'" alt=""></a>
+						</td>
+						<td class="cart_description">
+							<h4><a href="">'.$theProduct[0].'</a></h4>
+							<p>Web ID: 1089772</p>
+						</td>
+						<td class="cart_price">
+							<p>'.$theProduct[1].'</p>
+						</td>
+						<td class="cart_quantity">
+							<div class="cart_quantity_button">
+								<a class="cart_quantity_up"  onclick="cart_quantity('.$id.',true,'.$item['quantity'].')"> + </a>
+								<input class="cart_quantity_input" type="text" name="quantity" value="'.$item['quantity'].'" autocomplete="off" size="2">
+								<a class="cart_quantity_down" onclick="cart_quantity('.$id.',false,'.$item['quantity'].')"> - </a>
+							</div>
+						</td>
+						<td class="cart_total">
+							<p class="cart_total_price">'.$subTotal.'</p>
+						</td>
+						<td class="cart_delete">
+							<a class="cart_quantity_delete" onclick="cart_quantity('.$id.',false,-1)"><i class="fa fa-times"></i></a>
+						</td>
+						</tr>';
+						}
+						}	else{
+							echo '<h2>You should login to use cart.</h2>';	
+						}
+					
+						?>
+							
 					</tbody>
 				</table>
 			</div>
@@ -310,10 +307,13 @@
 				<div class="col-sm-6">
 					<div class="total_area">
 						<ul>
-							<li>Cart Sub Total <span>$59</span></li>
-							<li>Eco Tax <span>$2</span></li>
-							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>$61</span></li>
+							
+							<li>Total <span><?php 
+							if(isset($_SESSION['id']) && $_SESSION['id'] !== NULL){
+								echo $total;
+							}else{
+								echo 0;
+							}?></span></li>
 						</ul>
 							<a class="btn btn-default update" href="">Update</a>
 							<a class="btn btn-default check_out" href="">Check Out</a>

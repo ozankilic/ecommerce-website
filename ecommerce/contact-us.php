@@ -21,7 +21,48 @@
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<?php
+	
+	session_start();
+	?>
+
+	<script>
+			$(document).ready(function() {
+				$(document).on("click", "#BtnRegister", function() { 
+					email = $("#email").val(),
+					message = $("#message").val(),
+					name = $("#name").val()
+					subject = $("#subject").val()
+
+
+					alert("girdi")
+					alert(email);
+					$.ajax({
+						url: 'sendemail.php',
+						data: {
+								message: message,
+								email: email,
+								name: name,
+								subject: subject
+							},
+						type: 'POST',
+						success: function(answer) {
+							alert(answer);
+							}
+					});
+				});
+			});
+	</script>
+	<style>
+       /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+    </style>
+
 </head><!--/head-->
 
 <body>
@@ -57,7 +98,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="images/home/logo.png" alt="" /></a>
+							<a href="index.php"><img src="images/home/logo.png" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">
@@ -86,11 +127,9 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
-								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
-								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+							<?php
+								include "navbar.php";
+							?>
 							</ul>
 						</div>
 					</div>
@@ -112,24 +151,22 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html">Home</a></li>
+								<li><a href="index.php">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
-										<li><a href="product-details.html">Product Details</a></li> 
-										<li><a href="checkout.html">Checkout</a></li> 
-										<li><a href="cart.html">Cart</a></li> 
-										<li><a href="login.html">Login</a></li> 
+									<?php
+								include "navbar.php";
+							?>
                                     </ul>
                                 </li> 
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="blog.html">Blog List</a></li>
-										<li><a href="blog-single.html">Blog Single</a></li>
+                                        <li><a href="blog.php">Blog List</a></li>
+										<li><a href="blog-single.php">Blog Single</a></li>
                                     </ul>
                                 </li> 
-								<li><a href="404.html">404</a></li>
-								<li><a href="contact-us.html" class="active">Contact</a></li>
+								<li><a href="404.php">404</a></li>
+								<li><a href="contact-us.php" class="active">Contact</a></li>
 							</ul>
 						</div>
 					</div>
@@ -148,34 +185,49 @@
 	    	<div class="row">    		
 	    		<div class="col-sm-12">    			   			
 					<h2 class="title text-center">Contact <strong>Us</strong></h2>    			    				    				
-					<div id="gmap" class="contact-map">
-					</div>
+					<div id="map"></div>
+					<script>
+						// Initialize and add the map
+						function initMap() {
+						// The location of Uluru
+						var uluru = {lat: 41.0924061, lng: 29.0021886};
+						// The map, centered at Uluru
+						var map = new google.maps.Map(
+							document.getElementById('map'), {zoom: 15, center: uluru});
+						// The marker, positioned at Uluru
+						var marker = new google.maps.Marker({position: uluru, map: map});
+						}
+					</script>
+				<script defer
+					src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMWA937UdH1LS1zqehzCmRS0kc-6FSALg&callback=initMap">
+				</script>
 				</div>			 		
-			</div>    	
+			</div> <br><br>   	
     		<div class="row">  	
 	    		<div class="col-sm-8">
 	    			<div class="contact-form">
 	    				<h2 class="title text-center">Get In Touch</h2>
 	    				<div class="status alert alert-success" style="display: none"></div>
-				    	<form id="main-contact-form" class="contact-form row" name="contact-form" method="post">
+				    	
 				            <div class="form-group col-md-6">
-				                <input type="text" name="name" class="form-control" required="required" placeholder="Name">
+				                <input type="text" id="name" name="name" class="form-control" required="required" placeholder="Name">
 				            </div>
 				            <div class="form-group col-md-6">
-				                <input type="email" name="email" class="form-control" required="required" placeholder="Email">
+				                <input type="email" id="email" name="email" class="form-control" required="required" placeholder="Email">
 				            </div>
 				            <div class="form-group col-md-12">
-				                <input type="text" name="subject" class="form-control" required="required" placeholder="Subject">
+				                <input type="text" id="subject" name="subject" class="form-control" required="required" placeholder="Subject">
 				            </div>
 				            <div class="form-group col-md-12">
 				                <textarea name="message" id="message" required="required" class="form-control" rows="8" placeholder="Your Message Here"></textarea>
 				            </div>                        
 				            <div class="form-group col-md-12">
-				                <input type="submit" name="submit" class="btn btn-primary pull-right" value="Submit">
+							<button type="submit" id="BtnRegister" class="btn btn-primary">Send</button>
 				            </div>
-				        </form>
+				        
 	    			</div>
 	    		</div>
+				
 	    		<div class="col-sm-4">
 	    			<div class="contact-info">
 	    				<h2 class="title text-center">Contact Info</h2>

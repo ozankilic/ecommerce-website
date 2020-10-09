@@ -4,8 +4,9 @@ include "db_connection.php";
 
 $firstname = $_POST["firstname"];
 $lastname = $_POST["lastname"];
-$password = ($_POST["password"]);
+$password = $_POST["password"];
 $email = $_POST["email"];
+
 
 if (empty($firstname) || empty($lastname) || empty($password) || empty($email)) {
         echo 'Please fill to null fields';
@@ -19,7 +20,7 @@ if (!filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
     exit();
 }
 
-$query = "INSERT INTO thesite.user(first_name, last_name, mail, password) 
+$query = "INSERT INTO ecommerce.users(first_name, last_name, mail, password) 
         VALUES('$firstname','$lastname','$email','$password')";
 
 $result = mysqli_query($mysqli, $query);
