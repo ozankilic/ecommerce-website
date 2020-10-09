@@ -144,8 +144,9 @@
 		} else {
 			this.tooltip.addClass('hide');
 		}
+		
 	};
-
+	
 	Slider.prototype = {
 		constructor: Slider,
 
@@ -239,6 +240,7 @@
 			return false;
 		},
 
+ 
 		mousemove: function(ev) {
 			
 			// Touch: Get the original event:
@@ -259,6 +261,7 @@
 			this.percentage[this.dragged] = percentage;
 			this.layout();
 			var val = this.calculateValue();
+			$("#priceRangeHidden").val(val)
 			this.element
 				.trigger({
 					type: 'slide',
@@ -355,7 +358,7 @@
 		}
 	};
 
-	$.fn.slider = function ( option, val ) {
+	$.fn.slider = function ( option, val ) { 
 		return this.each(function () {
 			var $this = $(this),
 				data = $this.data('slider'),
